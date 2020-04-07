@@ -1,0 +1,2 @@
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\Pushdown_Accept\Debug\Pushdown_Accept.exe
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\Pushdown_Accept\Debug\Pushdown_Accept.pdb

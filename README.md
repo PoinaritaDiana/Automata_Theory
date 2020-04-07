@@ -4,3 +4,4 @@ C++ implementation of:
 3. Lambda-NFA (λ-NFA) 
 4. DFA Minimization
 5. Construction of a Regular Expression from a Finite Automaton (DFA_to_REGEX)
+6. Pushdown Automata Acceptance

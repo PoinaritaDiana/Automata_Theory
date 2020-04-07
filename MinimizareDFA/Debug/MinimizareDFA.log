@@ -1,0 +1,5 @@
+﻿  MinimizareDFA.cpp
+C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\MinimizareDFA.cpp(112,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\MinimizareDFA.cpp(139,25): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\MinimizareDFA.cpp(160,20): warning C4018: '<': signed/unsigned mismatch
+  MinimizareDFA.vcxproj -> C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\Debug\MinimizareDFA.exe

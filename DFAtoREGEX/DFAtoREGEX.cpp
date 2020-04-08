@@ -147,7 +147,12 @@ string dfa_to_regex(DFA& M){
 		//Verific mai intai daca starea are bucla sau nu
 		string bucla = "";
 		if (regex[stare][stare] != "") //Inseamna ca are bucla
-			bucla = "(" + regex[stare][stare] + ")" + "*";
+		{
+			if (regex[stare][stare].length() == 1)
+				bucla = regex[stare][stare] + "*";
+			else
+				bucla = "(" + regex[stare][stare] + ")" + "*";
+		}
 		
 		set <int> stariIn; //Starile qi pentru care exista tranzitie (qi,starea curenta)  - ma uit pe coloana stare
 		set <int> stariOut; //Starile qj pentru care exista tranzitie (starea curenta, qj)  - ma uit pe linia stare
@@ -166,27 +171,24 @@ string dfa_to_regex(DFA& M){
 		for(int i: stariIn)
 			for (int j : stariOut) {
 				if (regex[i][j] != "") {
-					if(regex[i][j]!=Lambda)
-						regex[i][j] = "(" + regex[i][j] + ")";
 					if (regex[i][stare] != "")
-						regex[i][j] = regex[i][j] + "+" + "(" + regex[i][stare] + ")";
+						regex[i][j] = "(" + regex[i][j] + "+" + regex[i][stare];
 					if (bucla != "")
-						regex[i][j] = regex[i][j] + "(" + bucla + ")";
-					if(regex[stare][j]!="")
-						regex[i][j] = regex[i][j] + "(" + regex[stare][j] + ")";
+						regex[i][j] = regex[i][j] + bucla;
+					if (regex[stare][j] != "")
+						regex[i][j] = regex[i][j]  + regex[stare][j];
+					regex[i][j] = regex[i][j] + ")";
 				}
 				else {
 					if (regex[i][stare] != "")
-						regex[i][j] = "(" + regex[i][stare] + ")";
+						regex[i][j] = regex[i][stare] ;
 					if (bucla != "")
-						regex[i][j] = regex[i][j] + "(" + bucla + ")";
+						regex[i][j] = regex[i][j] + bucla ;
 					if (regex[stare][j] != "")
-						regex[i][j] = regex[i][j] + "(" + regex[stare][j] + ")";
+						regex[i][j] = regex[i][j] +  regex[stare][j] ;
 				}
+					//regex[i][j] = "(" + regex[i][j] + ")" + "+" + "(" + regex[i][stare] + ")" + "(" + bucla + ")" + "(" + regex[stare][j] + ")"
 			}
-
-
-				//regex[i][j] = "(" + regex[i][j] + ")" + "+" + "(" + regex[i][stare] + ")" + "(" + bucla + ")" + "(" + regex[stare][j] + ")";
 
 		stariIn.clear();
 		stariOut.clear();

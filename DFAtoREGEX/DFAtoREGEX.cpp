@@ -161,7 +161,7 @@ string dfa_to_regex(DFA& M){
 			}
 		}
 
-		stariCurente.erase(stare);
+		stariCurente.erase(stare); //Stergem din vector starea pe care tocmai am eliminat o
 
 		for(int i: stariIn)
 			for (int j : stariOut) 

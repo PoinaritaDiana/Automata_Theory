@@ -171,21 +171,54 @@ string dfa_to_regex(DFA& M){
 		for(int i: stariIn)
 			for (int j : stariOut) {
 				if (regex[i][j] != "") {
-					if (regex[i][stare] != "")
-						regex[i][j] = "(" + regex[i][j] + "+" + regex[i][stare];
-					if (bucla != "")
-						regex[i][j] = regex[i][j] + bucla;
-					if (regex[stare][j] != "")
-						regex[i][j] = regex[i][j]  + regex[stare][j];
+					regex[i][j] = "(" + regex[i][j] + "+";
+
+					if (regex[i][stare] == Lambda) {
+						if (bucla == "" && regex[stare][j] == Lambda)
+							regex[i][j] = regex[i][j] + regex[i][stare];
+						else {
+							if (bucla != "") {
+								regex[i][j] = regex[i][j] + bucla;
+								if (regex[stare][j] != Lambda)
+									regex[i][j] = regex[i][j] + regex[stare][j];
+							}
+							else {
+								regex[i][j] =  regex[i][j] + regex[stare][j];
+							}
+						}
+					}
+					else {
+						regex[i][j] = regex[i][j] + regex[i][stare];
+						if (bucla != "")
+							regex[i][j] = regex[i][j] + bucla;
+						if (regex[stare][j] != Lambda)
+							regex[i][j] = regex[i][j] + regex[stare][j];
+					}
+
 					regex[i][j] = regex[i][j] + ")";
 				}
 				else {
-					if (regex[i][stare] != "")
-						regex[i][j] = regex[i][stare] ;
-					if (bucla != "")
-						regex[i][j] = regex[i][j] + bucla ;
-					if (regex[stare][j] != "")
-						regex[i][j] = regex[i][j] +  regex[stare][j] ;
+					if (regex[i][stare] == Lambda) {
+						if (bucla == "" && regex[stare][j] == Lambda)
+							regex[i][j] = regex[i][stare];
+						else {
+							if (bucla != "") {
+								regex[i][j] = bucla;
+								if (regex[stare][j] != Lambda)
+									regex[i][j] = regex[i][j] + regex[stare][j];
+							}
+							else {
+								regex[i][j] = regex[stare][j];
+							}
+						}
+					}
+					else {
+						regex[i][j] = regex[i][stare];
+						if (bucla != "")
+							regex[i][j] = regex[i][j] + bucla;
+						if(regex[stare][j]!=Lambda)
+							regex[i][j] = regex[i][j] + regex[stare][j];
+					}
 				}
 					//regex[i][j] = "(" + regex[i][j] + ")" + "+" + "(" + regex[i][stare] + ")" + "(" + bucla + ")" + "(" + regex[stare][j] + ")"
 			}
@@ -194,9 +227,8 @@ string dfa_to_regex(DFA& M){
 		stariOut.clear();
 			
 	}
-	
-	return regex[stareInitiala][stareFinala];
 
+	return regex[stareInitiala][stareFinala];
 }
 
 int main()

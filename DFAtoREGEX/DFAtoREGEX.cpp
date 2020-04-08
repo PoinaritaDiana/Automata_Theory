@@ -164,8 +164,29 @@ string dfa_to_regex(DFA& M){
 		stariCurente.erase(stare); //Stergem din vector starea pe care tocmai am eliminat o
 
 		for(int i: stariIn)
-			for (int j : stariOut) 
-				regex[i][j] = "(" + regex[i][j] + ")" + "+" + "(" + regex[i][stare] + ")" + "(" + bucla + ")" + "(" + regex[stare][j] + ")";
+			for (int j : stariOut) {
+				if (regex[i][j] != "") {
+					if(regex[i][j]!=Lambda)
+						regex[i][j] = "(" + regex[i][j] + ")";
+					if (regex[i][stare] != "")
+						regex[i][j] = regex[i][j] + "+" + "(" + regex[i][stare] + ")";
+					if (bucla != "")
+						regex[i][j] = regex[i][j] + "(" + bucla + ")";
+					if(regex[stare][j]!="")
+						regex[i][j] = regex[i][j] + "(" + regex[stare][j] + ")";
+				}
+				else {
+					if (regex[i][stare] != "")
+						regex[i][j] = "(" + regex[i][stare] + ")";
+					if (bucla != "")
+						regex[i][j] = regex[i][j] + "(" + bucla + ")";
+					if (regex[stare][j] != "")
+						regex[i][j] = regex[i][j] + "(" + regex[stare][j] + ")";
+				}
+			}
+
+
+				//regex[i][j] = "(" + regex[i][j] + ")" + "+" + "(" + regex[i][stare] + ")" + "(" + bucla + ")" + "(" + regex[stare][j] + ")";
 
 		stariIn.clear();
 		stariOut.clear();

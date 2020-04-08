@@ -6,7 +6,7 @@
 using namespace std;
 
 const int maxSize = 100;
-const string Lambda = "@";
+const string Lambda = "#";
 
 class DFA
 {

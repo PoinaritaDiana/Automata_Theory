@@ -32,7 +32,7 @@ public:
 	friend istream& operator >> (istream&, DFA&);
 	friend ostream& operator << (ostream&, DFA&);
 
-	//Retin intr-un vector pentru fiecare pozitie (adica stare initiala) numarul partitie din care face parte la final
+	//Retin intr-un vector pentru fiecare stare numarul partitie din care face parte la final
 	friend vector<int> partition(vector<int>, DFA&);
 	friend DFA minimizing_dfa (DFA&);
 };
@@ -106,9 +106,9 @@ ostream& operator << (ostream& out, DFA& M){
 }
 
 vector<int> partition(vector <int> v, DFA& M) {
-	vector <int> aux(v.size(), 0);
-	int nr_part = 1; //Nr.partitii
-	aux[0] = nr_part;
+	vector <int> aux(v.size(), 0);		// Un vector auxiliar in care voi retine partitiile curente
+	int nr_part = 1;					// Nr.partitii
+	aux[0] = nr_part;                   // Starea initiala va avea mereu partitia 1
 	for (int i = 1; i < v.size(); i++){
 		int ok = 0;
 		int j = 0;
@@ -134,6 +134,9 @@ vector<int> partition(vector <int> v, DFA& M) {
 			aux[i] = nr_part;
 		}
 	}
+
+	// Daca nu am facut nicio modificare fata de pasul anterior, inseamna ca nu mai sunt de facut alte partitii si pot returna vectorul
+	// Daca exista modificari, inseamna ca trebuie sa mai testez daca mai exista partitii de facut
 	int verif = 1;
 	int i = 0;
 	while (verif == 1 && i < v.size()) {
@@ -148,25 +151,24 @@ vector<int> partition(vector <int> v, DFA& M) {
 }
 
 DFA minimizing_dfa (DFA& M) {
-	vector <int> v(M.getNrStates(), 1);  //Pentru fiecare stare, retinem numarul partitiei corespunzatoare
+	vector <int> v(M.getNrStates(), 1);		//Pentru fiecare stare, retin numarul partitiei corespunzatoare
+	for (int i : M.F) v[i] = 2;				// Daca este stare finala, se va afla in partitia nr.2; daca nu, in partitia nr.1
 
-	for (int i : M.F) v[i] = 2; // Daca este stare finala, se va afla in partitia nr.2; daca nu, in partitia nr.1
+	v = partition(v, M);	// Actualizez v in urma partitiilor facute 
 
-	v = partition(v, M); // Formez vectorul pentru partitii
-
-	DFA A; //Automatul minimizat
-	A.Sigma = M.Sigma;  //Alfabetul Sigma ramane acelasi
+	DFA A;					// Automatul minimizat
+	A.Sigma = M.Sigma;		//Alfabetul Sigma ramane acelasi
 
 	for (int i = 0; i < v.size(); i++) {
-		if (i == M.q0) A.q0 = v[i] - 1;
-		if (M.F.find(i) != M.F.end()) A.F.insert(v[i] - 1);
+		if (i == M.q0) A.q0 = v[i] - 1;								// Daca qi era stare initiala in AFD-ul initial, atunci si partitia din care face parte e stare initiala
+		if (M.F.find(i) != M.F.end()) A.F.insert(v[i] - 1);			// Daca qi era stare finala in AFD-ul initial, atunci si partitia din care face parte e stare finala
 		if (A.Q.find(v[i] - 1) == A.Q.end()){
-			A.Q.insert(v[i] - 1);
-			for (char s : A.Sigma)
-				A.delta[{v[i] - 1, s}] = v[M.delta[{i, s}]]-1;
+			A.Q.insert(v[i] - 1);									// Fiecare partitie reprezinta, de fapt, o stare in AFD-ul minimizat ( v[i]-1 pentru ca am inceput partitiile de la 1)
+			for (char s : A.Sigma)									// Refac tranzitiile din AFD-ul initial
+				A.delta[{v[i] - 1, s}] = v[M.delta[{i, s}]]-1;      // Tranzitia (qi,qj) va fi delta[{partitia in care se afla qi, s}] = paritita in care se afla vechiul M.delta[{i, s}]
 		}
 	}
-	return A;
+	return A;    // Returnez AFD-ul modificat
 }
 
 int main()

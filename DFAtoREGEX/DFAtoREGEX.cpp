@@ -135,7 +135,7 @@ string dfa_to_regex(DFA& M){
 	}
 
 	set <int> stariCurente;									// Retin in "stariCurente" starile care au mai ramas dupa fiecare eliminare in automat
-	for (int i = 0; i < nrStari; i++)						//Initial, sunt toate starile automatului
+	for (int i = 0; i < nrStari; i++)						// Initial, sunt toate starile automatului
 		stariCurente.insert(i);
 
 
@@ -143,7 +143,7 @@ string dfa_to_regex(DFA& M){
 	// "*"=stelare; "+"=reuniune; altfel, concatenare
 
 	for (int stare : stariEliminare) {
-																		//Verific daca starea are exista tranzitia (qi,qi)
+																		// Verific daca starea are exista tranzitia (qi,qi)
 		string bucla = "";
 		if (regex[stare][stare] != ""){									// Daca nu e vid, inseamna ca are bucla
 			if (regex[stare][stare].length() == 1)  
@@ -151,11 +151,11 @@ string dfa_to_regex(DFA& M){
 				bucla = "(" + regex[stare][stare] + ")" + "*";
 		}
 		
-		stariCurente.erase(stare);					//Sterg din set starea pe care urmeaza sa o elimin (pentru ca nu o sa mai fie in automat)
+		stariCurente.erase(stare);					// Sterg din set starea pe care urmeaza sa o elimin (pentru ca nu o sa mai fie in automat)
 
 
-		set <int> stariIn;							// Retin starile qi pentru care exista tranzitie (qi,starea curenta) / "intra" in starea curenta - ma uit pe coloana stare
-		set <int> stariOut;							// Retin starile qj pentru care exista tranzitie (starea curenta, qj) / "ies" din starea curenta - ma uit pe linia stare
+		set <int> stariIn;							// Retin starile qi pentru care exista tranzitie (qi, stare_de_eliminat) / "intra" in stare_de_eliminat - ma uit pe coloana stare
+		set <int> stariOut;							// Retin starile qj pentru care exista tranzitie (stare_de_eliminat, qj) / "ies" din stare_de_eliminat - ma uit pe linia stare
 		for (int i: stariCurente) {
 			if (regex[i][stare] != "")
 				stariIn.insert(i);

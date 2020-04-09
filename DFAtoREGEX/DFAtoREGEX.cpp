@@ -11,13 +11,13 @@ const string Lambda = "#";
 class DFA
 {
 	set<int> Q, F;
-	set<char> Sigma;
+	set<string> Sigma;
 	int q0;
-	map<pair<int, char>, int> delta;
+	map<pair<int, string>, int> delta;
 
 public:
 	DFA() { this->q0 = 0; }
-	DFA(set<int> Q, set<char> Sigma, map<pair<int, char>, int> delta, int q0, set<int> F){
+	DFA(set<int> Q, set<string> Sigma, map<pair<int, string>, int> delta, int q0, set<int> F){
 		this->Q = Q;
 		this->Sigma = Sigma;
 		this->delta = delta;
@@ -27,9 +27,9 @@ public:
 
 	set<int> getQ() const { return this->Q; }
 	set<int> getF() const { return this->F; }
-	set<char> getSigma() const { return this->Sigma; }
+	set<string> getSigma() const { return this->Sigma; }
 	int getInitialState() const { return this->q0; }
-	map<pair<int, char>, int> getDelta() const { return this->delta; }
+	map<pair<int, string>, int> getDelta() const { return this->delta; }
 
 	friend istream& operator >> (istream&, DFA&);
 	friend string dfa_to_regex(DFA&);
@@ -47,7 +47,7 @@ istream& operator >> (istream& f, DFA& M){
 	int noOfLetters;
 	f >> noOfLetters;
 	for (int i = 0; i < noOfLetters; ++i){
-		char ch;
+		string ch;
 		f >> ch;
 		M.Sigma.insert(ch);
 	}
@@ -56,7 +56,7 @@ istream& operator >> (istream& f, DFA& M){
 	f >> noOfTransitions;
 	for (int i = 0; i < noOfTransitions; ++i){
 		int s, d;
-		char ch;
+		string ch;
 		f >> s >> ch >> d;
 		M.delta[{s, ch}] = d;
 	}

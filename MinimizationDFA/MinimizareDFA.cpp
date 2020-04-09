@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <map>
 #include <string>
 #include <set>
@@ -106,22 +106,26 @@ ostream& operator << (ostream& out, DFA& M){
 }
 
 vector<int> partition(vector <int> v, DFA& M) {
-	vector <int> aux(v.size(), 0);		// Un vector auxiliar in care voi retine partitiile curente
-	int nr_part = 1;					// Nr.partitii
-	aux[0] = nr_part;                   // Starea initiala va avea mereu partitia 1
+	vector <int> aux(v.size(), 0);				// Un vector auxiliar in care voi retine partitiile curente
+	int nr_part = 1;							// Nr.partitii
+	aux[0] = nr_part;							// Starea initiala va avea mereu partitia 1
 	for (int i = 1; i < v.size(); i++){
-		int ok = 0;
-		int j = 0;
+		int ok = 0;								
+		int j = 0;								// Pentru fiecare stare qi verific "echivalenta" cu starile qj pentru care deja am stabilit partitia (unde j<i)
 		while (ok == 0 && j < i) {
-			if (v[i] == v[j]) {
-				int egal = 1;
-				for (char s : M.getSigma())
-					if (v[M.delta[{i, s}]] != v[M.delta[{j, s}]]) egal = 0;
+			if (v[i] == v[j]) {					// Daca se afla in aceeasi partitie, continui cu verificarea echivalentei dintre tranzitii; daca nu, trec la urmatoarea stare
+				int egal = 1;					// Presupun initial ca cele doua stari sunt "echivalente", adica duc catre aceeasi partitie
 
+				// Daca tranzițiile de la cele două stări qi și qj, cu o aceeași literă, duc spre stări aflate deja la pasul anterior în partiții diferite: sunt separabile
+				for (char s : M.getSigma())
+					if (v[M.delta[{i, s}]] != v[M.delta[{j, s}]]) egal = 0;	
+
+				// Daca cele doua stari sunt "echivalente", inseamna ca qi se afla in aceeasi partitie ca si qj
 				if (egal==1) {
 					ok = 1;
 					aux[i] = aux[j];
 				}
+				//Altfel, fac o noua partitie pentru qi
 				else {
 					nr_part++;
 					aux[i] = nr_part;
@@ -129,6 +133,7 @@ vector<int> partition(vector <int> v, DFA& M) {
 			}
 			j++;
 		}
+		// Daca nu am gasit nicio stare cu care sa se poata potrivi, inseamna ca trebuie sa pun starea curenta intr-o noua partitie
 		if(aux[i]==0){
 			nr_part++;
 			aux[i] = nr_part;

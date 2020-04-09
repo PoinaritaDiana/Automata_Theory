@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-const int maxSize = 100;
+const int maxSize = 100;  
 const string Lambda = "#";
 
 class DFA
@@ -81,7 +81,7 @@ string dfa_to_regex(DFA& M){
 	int okinitial = 1;									// okinitial devine 0 daca există tranzitii care ajung in starea inițială
 	int okfinal = 1;									// okfinal devine 0 dacă există tranzitii care pleacă din vreo stare finală
 
-	// In cazul in care este necesar sa introduc o noua stare initiala ( adica okinitial devine 0/există săgeți care ajung către starea inițială a AFD-ului):
+	// Daca este necesar sa introduc o noua stare initiala ( adica okinitial devine 0/există săgeți care ajung către starea inițială a AFD-ului):
 	// salvez in matrice tranzitia(qi,qj) drept regex[i+1][j+1] pentru a putea pune noua stare initiala q0 si tranzitiile ei (pastrez linia 0 si coloana 0)
 	// Retin in matrice literele cu care s-au realizat tranzitiile dintre doua stari ale AFD
 
@@ -143,17 +143,8 @@ string dfa_to_regex(DFA& M){
 	// "*"=stelare; "+"=reuniune; altfel, concatenare
 
 	for (int stare : stariEliminare) {
-																		// Verific daca starea are exista tranzitia (qi,qi)
-		string bucla = "";
-		if (regex[stare][stare] != ""){									// Daca nu e vid, inseamna ca are bucla
-			if (regex[stare][stare].length() == 1)  
-				bucla = regex[stare][stare] + "*";						// Daca e un singur caracter nu are rost sa pun paranteze 
-				bucla = "(" + regex[stare][stare] + ")" + "*";
-		}
-		
 		stariCurente.erase(stare);					// Sterg din set starea pe care urmeaza sa o elimin (pentru ca nu o sa mai fie in automat)
-
-
+		
 		set <int> stariIn;							// Retin starile qi pentru care exista tranzitie (qi, stare_de_eliminat) / "intra" in stare_de_eliminat - ma uit pe coloana stare
 		set <int> stariOut;							// Retin starile qj pentru care exista tranzitie (stare_de_eliminat, qj) / "ies" din stare_de_eliminat - ma uit pe linia stare
 		for (int i: stariCurente) {
@@ -163,10 +154,18 @@ string dfa_to_regex(DFA& M){
 				stariOut.insert(i);
 		}
 
-		// Le refac astfel: regex[i][j] = regex[i][j] + (regex[i][stare]) x (bucla) x (regex[stare][j]);
+		// Daca exista tranzitia (qi,qi), adica bucla
+		string bucla = "";
+		if (regex[stare][stare] != "") {							
+			if (regex[stare][stare].length() == 1)
+				bucla = regex[stare][stare] + "*";	
+			bucla = "(" + regex[stare][stare] + ")" + "*";
+		}
+
+		// Le refac astfel: regex[i][j] = regex[i][j] (vechiul drum) + ( regex[i][stare] )( bucla )( regex[stare][j] );
 		// Daca elimin o stare, trebuie sa refac toate tranzitiile dintre starile care "intra" (stariIn) in starea de eliminat si cele care "ies" (stariOut) - produs cartezian
 
-		//Am pus niste if-uri ca sa mai scap de niste paranteze inutile, dar chiar nu stiu cum as putea sa le explic 
+		//Am pus if-uri ca sa mai scap de niste paranteze inutile
 		for(int i: stariIn)
 			for (int j : stariOut) {
 				if (regex[i][j] != "") {
@@ -197,7 +196,6 @@ string dfa_to_regex(DFA& M){
 								if (regex[stare][j] != Lambda)  regex[i][j] = regex[i][j] + regex[stare][j];
 							}
 							else regex[i][j] = regex[stare][j];
-							
 						}
 					}
 					else {

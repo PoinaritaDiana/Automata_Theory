@@ -1,2 +1,4 @@
 C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\Debug\MinimizareDFA.exe
 C:\Users\Diana\Desktop\SEM.2\LFA\Tema 2 LFA\MinimizareDFA\Debug\MinimizareDFA.pdb
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\Debug\MinimizareDFA.exe
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\Debug\MinimizareDFA.pdb

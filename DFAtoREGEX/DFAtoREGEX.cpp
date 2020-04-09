@@ -166,7 +166,7 @@ string dfa_to_regex(DFA& M){
 		// Le refac astfel: regex[i][j] = regex[i][j] + (regex[i][stare]) x (bucla) x (regex[stare][j]);
 		// Daca elimin o stare, trebuie sa refac toate tranzitiile dintre starile care "intra" (stariIn) in starea de eliminat si cele care "ies" (stariOut) - produs cartezian
 
-		//Am pus niste if-uri ca sa mai scap de niste paranteze inutile, dar chiar nu stiu cum as putea sa le explic :))
+		//Am pus niste if-uri ca sa mai scap de niste paranteze inutile, dar chiar nu stiu cum as putea sa le explic 
 		for(int i: stariIn)
 			for (int j : stariOut) {
 				if (regex[i][j] != "") {

@@ -70,13 +70,13 @@ istream& operator >> (istream& f, DFA& M){
 string dfa_regex(DFA& M){
 	string regex[maxSize][maxSize] = { "" };			// O matrice care retine expr. regulate (string) dintre oricare doua stari ale automatului
 
-	int nrStari = M.Q.size();							// Nr. de stari pentru AFE este initial egal cu nr. stari AFD
+	int nrStari = M.Q.size();							// Nr. de stari este initial egal cu nr. stari AFD
 	int okinitial = 1;									// okinitial devine 0 daca există tranzitii care ajung in starea inițială
 	int okfinal = 1;									// okfinal devine 0 dacă există tranzitii care pleacă din vreo stare finală
 
 	// Daca este necesar sa introduc o noua stare initiala ( adica okinitial devine 0/există săgeți care ajung către starea inițială a AFD-ului):
 	// salvez in matrice tranzitia(qi,qj) drept regex[i+1][j+1] pentru a putea pune noua stare initiala q0 si tranzitiile ei (pastrez linia 0 si coloana 0 "libere")
-	// Retin in matrice literele cu care s-au realizat tranzitiile dintre doua stari ale AFD
+	// Retin in matrice tranzitiile dintre doua stari ale AFD
 
 	for (auto t : M.delta) {
 		if (regex[t.first.first + 1][t.second + 1] == "")						//Daca nu au mai fost retinute si alte tranzitii anterior

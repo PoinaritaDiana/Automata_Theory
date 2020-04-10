@@ -24,15 +24,8 @@ public:
 		this->q0 = q0;
 		this->F = F;
 	}
-
-	set<int> getQ() const { return this->Q; }
-	set<int> getF() const { return this->F; }
-	set<string> getSigma() const { return this->Sigma; }
-	int getInitialState() const { return this->q0; }
-	map<pair<int, string>, int> getDelta() const { return this->delta; }
-
 	friend istream& operator >> (istream&, DFA&);
-	friend string dfa_to_regex(DFA&);
+	friend string dfa_regex(DFA&);
 };
 
 istream& operator >> (istream& f, DFA& M){
@@ -74,7 +67,7 @@ istream& operator >> (istream& f, DFA& M){
 	return f;
 }
 
-string dfa_to_regex(DFA& M){
+string dfa_regex(DFA& M){
 	string regex[maxSize][maxSize] = { "" };			// O matrice care retine expr. regulate (string) dintre oricare doua stari ale automatului
 
 	int nrStari = M.Q.size();							// Nr. de stari pentru AFE este initial egal cu nr. stari AFD
@@ -82,7 +75,7 @@ string dfa_to_regex(DFA& M){
 	int okfinal = 1;									// okfinal devine 0 dacă există tranzitii care pleacă din vreo stare finală
 
 	// Daca este necesar sa introduc o noua stare initiala ( adica okinitial devine 0/există săgeți care ajung către starea inițială a AFD-ului):
-	// salvez in matrice tranzitia(qi,qj) drept regex[i+1][j+1] pentru a putea pune noua stare initiala q0 si tranzitiile ei (pastrez linia 0 si coloana 0)
+	// salvez in matrice tranzitia(qi,qj) drept regex[i+1][j+1] pentru a putea pune noua stare initiala q0 si tranzitiile ei (pastrez linia 0 si coloana 0 "libere")
 	// Retin in matrice literele cu care s-au realizat tranzitiile dintre doua stari ale AFD
 
 	for (auto t : M.delta) {
@@ -159,7 +152,8 @@ string dfa_to_regex(DFA& M){
 		if (regex[stare][stare] != "") {							
 			if (regex[stare][stare].length() == 1)
 				bucla = regex[stare][stare] + "*";	
-			bucla = "(" + regex[stare][stare] + ")" + "*";
+			else
+				bucla = "(" + regex[stare][stare] + ")" + "*";
 		}
 
 		// Le refac astfel: regex[i][j] = regex[i][j] (vechiul drum) + ( regex[i][stare] )( bucla )( regex[stare][j] );
@@ -217,7 +211,7 @@ int main()
 	ifstream fin("dfa.txt");
 	fin >> M;
 	fin.close();
-	string expresie = dfa_to_regex(M);
+	string expresie = dfa_regex(M);
 	cout << expresie;
 	return 0;
 }

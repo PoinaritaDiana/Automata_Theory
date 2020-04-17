@@ -100,9 +100,9 @@ vector<int> partition(vector <int> v, DFA& M) {
 	
 	int verif;
 	do {
-		vector <int> aux(v.size(), 0);				// Un vector auxiliar in care voi retine partitiile curente
-		int nr_part = 1;							// Nr.partitii
-		aux[0] = nr_part;							// Starea initiala va avea mereu partitia 1
+		vector <int> aux(v.size(), -1);				// Un vector auxiliar in care voi retine partitiile curente
+		int nr_part = 0;							// Nr.partitii
+		aux[0] = nr_part;							// Starea initiala va avea mereu partitia 0
 		for (int i = 1; i < v.size(); i++) {
 			int ok = 0;
 			int j = 0;								// Pentru fiecare stare qi verific "echivalenta" cu starile qj pentru care deja am stabilit partitia (j<i)
@@ -128,7 +128,7 @@ vector<int> partition(vector <int> v, DFA& M) {
 				j++;
 			}
 			// Daca nu am gasit nicio stare cu care sa se poata potrivi, inseamna ca trebuie sa pun starea curenta intr-o noua partitie
-			if (aux[i] == 0) {
+			if (aux[i] == -1) {
 				nr_part++;
 				aux[i] = nr_part;
 			}
@@ -149,8 +149,8 @@ vector<int> partition(vector <int> v, DFA& M) {
 }
 
 DFA minimizing_dfa (DFA& M) {
-	vector <int> v(M.getNrStates(), 1);		// Pentru fiecare stare din AFD-ul initial retin numarul partitiei din care face parte
-	for (int i : M.F) v[i] = 2;				// Daca este stare finala, se va afla in partitia nr.2; daca nu, in partitia nr.1
+	vector <int> v(M.getNrStates(), 0);		// Pentru fiecare stare din AFD-ul initial retin numarul partitiei din care face parte
+	for (int i : M.F) v[i] = 1;				// Daca este stare finala, se va afla in partitia nr.1; daca nu, in partitia nr.0
 
 	v = partition(v, M);	// Actualizez v in urma partitiilor facute 
 
@@ -159,13 +159,13 @@ DFA minimizing_dfa (DFA& M) {
 
 	for (int i = 0; i < v.size(); i++) {
 		if (i == M.q0)
-			A.q0 = v[i] - 1;								// Daca qi era stare initiala in AFD-ul initial, atunci si partitia din care face parte e stare initiala
+			A.q0 = v[i];								// Daca qi era stare initiala in AFD-ul initial, atunci si partitia din care face parte e stare initiala
 		if (M.F.find(i) != M.F.end()) 
-			A.F.insert(v[i] - 1);							// Daca qi era stare finala in AFD-ul initial, atunci si partitia din care face parte e stare finala
-		if (A.Q.find(v[i] - 1) == A.Q.end()){
-			A.Q.insert(v[i] - 1);									// Fiecare partitie reprezinta, de fapt, o stare in AFD-ul minimizat ( v[i]-1 pentru ca am inceput partitiile de la 1)
+			A.F.insert(v[i]);							// Daca qi era stare finala in AFD-ul initial, atunci si partitia din care face parte e stare finala
+		if (A.Q.find(v[i]) == A.Q.end()){
+			A.Q.insert(v[i]);										// Fiecare partitie reprezinta, de fapt, o stare in AFD-ul minimizat
 			for (char s : A.Sigma)									// Refac tranzitiile din AFD-ul initial
-				A.delta[{v[i] - 1, s}] = v[M.delta[{i, s}]]-1;      // Tranzitia (qi,qj) va fi delta[{partitia in care se afla qi, s}] = paritita in care se afla vechiul M.delta[{i, s}]
+				A.delta[{v[i], s}] = v[M.delta[{i, s}]];			// Tranzitia (qi,qj) va fi delta[{partitia in care se afla qi, s}] = paritita in care se afla vechiul M.delta[{i, s}]
 		}															// Adica refac tranzitiile folosind partitiile
 	}
 	return A;    // Returnez AFD-ul modificat

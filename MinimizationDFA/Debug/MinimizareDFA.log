@@ -1,5 +1,5 @@
 ﻿  MinimizareDFA.cpp
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(115,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(150,26): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(220,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(106,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(141,26): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\MinimizareDFA.cpp(160,20): warning C4018: '<': signed/unsigned mismatch
   MinimizareDFA.vcxproj -> C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\MinimizationDFA\Debug\MinimizareDFA.exe

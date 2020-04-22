@@ -150,7 +150,7 @@
     <ClCompile Include="MinimizareDFA.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dfa.txt" />
+    <Text Include="dfamin.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

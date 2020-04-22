@@ -20,6 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dfa.txt" />
+    <Text Include="dfamin.txt" />
   </ItemGroup>
 </Project>

@@ -173,7 +173,7 @@ DFA minimizing_dfa (DFA& M) {
 
 int main()
 {
-	ifstream fin("dfa.txt");
+	ifstream fin("dfamin.txt");
 	DFA M;
 	fin >> M;
 	fin.close();

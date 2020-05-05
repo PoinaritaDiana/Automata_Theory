@@ -11,19 +11,20 @@ set <char> Sigma;				//Terminale
 char caracter;
 
 void configGrammar() {
-	P["S"].insert("aAb"); P["S"].insert("BC"); P["S"].insert("@");
-	P["A"].insert("AaB"); P["A"].insert("Db");
-	P["B"].insert("b"); P["B"].insert("C");
-	P["C"].insert("@"); P["C"].insert("ab");
-	P["D"].insert("@");
-	P["F"].insert("a");
+	P["S"].insert("aAbC"); P["S"].insert("dB"); P["S"].insert("@");
+	P["A"].insert("bA"); P["A"].insert("@");
+	P["B"].insert("d"); P["B"].insert("c");
+	P["C"].insert("@"); 
+	P["F"].insert("@"); P["F"].insert("A"); P["F"].insert("BC");
 
 	N.insert("S"); N.insert("A"); N.insert("B");
-	N.insert("C"); N.insert("D"); N.insert("F");
+	N.insert("C"); N.insert("F");
 	Sigma.insert('a'); Sigma.insert('b');
+	Sigma.insert('c'); Sigma.insert('d');
 	
 	caracter = 'F';
 }
+
 void uselessProductions() {
 	//Simboluri din N care sunt utilizabile
 	set <string> n1;
@@ -105,11 +106,6 @@ void uselessProductions() {
 
 }
 
-void eliminateStart() {
-	N.insert("S0");
-	P["S0"].insert("S");
-}
-
 void lambdaProductions() {
 	set <string> eliminare;
 	int ok = 0;
@@ -119,18 +115,18 @@ void lambdaProductions() {
 			ok = 1;
 			if (P[n].size() == 1) {
 				eliminare.insert(n);
-				for (auto nn : N) 
-					if(nn!=n){
+				for (auto nn : N)
+					if (nn != n) {
 						set<string> Pnou;
 						for (auto p : P[nn]) {
 							if (p.size() == 1 && p == n) {
 								p = "@";
 							}
-							if (p.size() > 1 && p.find(n)!= string::npos) {
+							if (p.size() > 1 && p.find(n) != string::npos) {
 								int poz = p.find(n);
 								p.erase(poz, 1);
 							}
-							
+
 							Pnou.insert(p);
 						}
 						P[nn] = Pnou;
@@ -149,8 +145,8 @@ void lambdaProductions() {
 								p.erase(poz, 1);
 							}
 							Pnou.insert(p);
-							if (vechip != ""){
-								Pnou.insert(vechip); 
+							if (vechip != "") {
+								Pnou.insert(vechip);
 								vechip = "";
 							}
 
@@ -160,12 +156,17 @@ void lambdaProductions() {
 			}
 		}
 	}
-	for (auto s : eliminare){
+	for (auto s : eliminare) {
 		N.erase(s);
 		P.erase(s);
 	}
 	if (ok == 1)
 		lambdaProductions();
+}
+
+void eliminateStart() {
+	N.insert("S0");
+	P["S0"].insert("S");
 }
 
 void unitProductions() {
@@ -249,13 +250,15 @@ void eliminateMoreNonTerminals() {
 
 int main() {
 	configGrammar();
-	/*eliminateStart();
+	
+	uselessProductions();
 	for (auto p : P) {
 		cout << p.first << "->";
 		for (auto e : p.second)cout << e << ",";
 		cout << endl;
 	}
 	cout << endl;
+
 	lambdaProductions();
 	for (auto p : P) {
 		cout << p.first << "->";
@@ -263,6 +266,7 @@ int main() {
 		cout << endl;
 	}
 	cout << endl;
+
 	eliminateTerminals();
 	for (auto p : P) {
 		cout << p.first << "->";
@@ -270,14 +274,8 @@ int main() {
 		cout << endl;
 	}
 	cout << endl;
-	eliminateMoreNonTerminals();
 
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}*/
-	uselessProductions();
+	eliminateMoreNonTerminals();
 	for (auto p : P) {
 		cout << p.first << "->";
 		for (auto e : p.second)cout << e << ",";

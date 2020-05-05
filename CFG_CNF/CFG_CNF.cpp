@@ -8,7 +8,6 @@ using namespace std;
 map <string, set<string>> P;	//Productii
 set <string> N;					//Neterminale
 set <char> Sigma;				//Terminale
-string S;
 char caracter;
 
 void configGrammar() {
@@ -22,28 +21,71 @@ void configGrammar() {
 	N.insert("S"); N.insert("A"); N.insert("B");
 	N.insert("C"); N.insert("D"); N.insert("F");
 	Sigma.insert('a'); Sigma.insert('b');
-	S = "S";
-
+	
 	caracter = 'F';
 }
 
 void eliminateStart() {
 	N.insert("S0");
-	S = "S0";
 	P["S0"].insert("S");
 }
 
 void lambdaProductions() {
 	set <string> eliminare;
+	int ok = 0;
 	//Pentru fiecare neterminal
 	for (auto n : N) {
-		set<string>::iterator it;
-		it = P[n].find("@");
-		//Daca se gaseste lambda
-		if (it != P[n].end()) {
-			if (P[n].size() == 1) eliminare.insert(n);
+		if (P[n].find("@") != P[n].end()) {
+			ok = 1;
+			if (P[n].size() == 1) {
+				eliminare.insert(n);
+				for (auto nn : N) 
+					if(nn!=n){
+						set<string> Pnou;
+						for (auto p : P[nn]) {
+							if (p.size() == 1 && p == n) {
+								p = "@";
+							}
+							if (p.size() > 1 && p.find(n)!= string::npos) {
+								int poz = p.find(n);
+								p.erase(poz, 1);
+							}
+							
+							Pnou.insert(p);
+						}
+						P[nn] = Pnou;
+					}
+			}
+			else {
+				P[n].erase("@");
+				for (auto nn : N)
+					if (nn != n) {
+						set<string> Pnou;
+						string vechip = "";
+						for (auto p : P[nn]) {
+							if (p.size() > 1 && p.find(n) != string::npos) {
+								vechip = p;
+								int poz = p.find(n);
+								p.erase(poz, 1);
+							}
+							Pnou.insert(p);
+							if (vechip != ""){
+								Pnou.insert(vechip); 
+								vechip = "";
+							}
+
+						}
+						P[nn] = Pnou;
+					}
+			}
 		}
 	}
+	for (auto s : eliminare){
+		N.erase(s);
+		P.erase(s);
+	}
+	if (ok == 1)
+		lambdaProductions();
 }
 
 void unitProductions() {
@@ -132,7 +174,27 @@ void eliminateMoreNonTerminals() {
 
 int main() {
 	configGrammar();
+	eliminateStart();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
+	lambdaProductions();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
 	eliminateTerminals();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
 	eliminateMoreNonTerminals();
 
 	for (auto p : P) {

@@ -96,15 +96,44 @@ void eliminateTerminals() {
 	}
 }
 
+
 void eliminateMoreNonTerminals() {
+	//Neterminalele noi adaugate
+	set <char> newAdd;
+	int ok = 0;
+	for (auto n : N) {
+		set<string> Pnou;	//Retin toate productiile (cu modificari, daca e cazul)
+		for (auto p : P[n]) {
+			if (p.size() >= 3) {
+				ok = 1;
+				//Neterminalul de inserat
+				caracter++;
+				string sc = string(1, caracter);
+				string rest = p.substr(1);
+				p = p[0] + sc;
+				P[sc].insert(rest);
+				newAdd.insert(caracter);
+			}
+			Pnou.insert(p);
+		}
+		P[n] = Pnou;
+	}
 
+	//Adaug neterminalele noi
+	if (newAdd.size() != 0) {
+		for (auto s : newAdd)
+			N.insert(string(1,s));
+	}
+
+	if(ok==1)
+		eliminateMoreNonTerminals();
 }
-
 
 
 int main() {
 	configGrammar();
 	eliminateTerminals();
+	eliminateMoreNonTerminals();
 
 	for (auto p : P) {
 		cout << p.first << "->";

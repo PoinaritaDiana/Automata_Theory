@@ -1,0 +1,4 @@
+﻿  CFG_CNF.cpp
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(65,23): warning C4018: '<': signed/unsigned mismatch
+  CFG_CNF.vcxproj -> C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\Debug\CFG_CNF.exe

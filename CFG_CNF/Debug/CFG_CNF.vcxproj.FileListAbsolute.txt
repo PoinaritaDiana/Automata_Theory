@@ -1,0 +1,2 @@
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\Debug\CFG_CNF.exe
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\Debug\CFG_CNF.pdb

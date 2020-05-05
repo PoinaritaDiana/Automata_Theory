@@ -1,4 +1,8 @@
 ﻿  CFG_CNF.cpp
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(5,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(110,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(101,13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(115,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(133,11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(136,17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(163,13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(185,23): warning C4018: '<': signed/unsigned mismatch
   CFG_CNF.vcxproj -> C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\Debug\CFG_CNF.exe

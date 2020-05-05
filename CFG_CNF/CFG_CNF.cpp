@@ -2,7 +2,7 @@
 #include <set>
 #include <string>
 #include <map>
-#include <vector>]
+#include <vector>
 using namespace std;
 
 map <string, set<string>> P;	//Productii
@@ -23,6 +23,86 @@ void configGrammar() {
 	Sigma.insert('a'); Sigma.insert('b');
 	
 	caracter = 'F';
+}
+void uselessProductions() {
+	//Simboluri din N care sunt utilizabile
+	set <string> n1;
+	for (auto n : N)
+		for (auto p : P[n]) {
+			int i = 0;
+			while (i < p.size() && N.find(string(1, p[i])) == N.end())
+				i++;
+			if (i == p.size()) {
+				n1.insert(n);
+				break;
+			}
+		}
+	int ok;
+	do {
+		ok = 0;
+		for (auto n : N)
+			if (n1.find(n) == n1.end()) {
+				for (auto p : P[n]) {
+					int i = 0;
+					while (i < p.size() && (N.find(string(1, p[i])) == N.end() || n1.find(string(1, p[i])) != n1.end()))
+						i++;
+					if (i == p.size()) {
+						n1.insert(n);
+						ok = 1;
+						break;
+					}
+				}
+			}
+	} while (ok);
+
+
+	//Simboluri din N care sunt accesibile
+	vector <string> N2;
+	set <string> n2;
+	n2.insert("S");
+	N2.push_back("S");
+	int i = 0;
+	while (i < N2.size()) {
+		string n = N2[i];
+		for (auto p : P[n]) {
+			for (int j = 0; j < p.size(); j++)
+				if (N.find(string(1, p[j])) != N.end() && n2.find(string(1, p[j])) == n2.end()) {
+					n2.insert(string(1, p[j]));
+					N2.push_back(string(1, p[j]));
+				}
+		}
+		i++;
+	}
+
+	//Elementele comune = ce trebuie sa ramana (in n1)
+	auto it = n1.begin();
+	while (it != n1.end()) {
+		if (n2.find(*it) == n2.end()) {
+			N.erase(*it);
+			P.erase(*it);
+			it = n1.erase(it);
+
+		}
+		else
+			it++;
+	}
+
+	//Stergem productiile care contine neterminale care nu sunt in N
+	for (auto n : N) {
+		set<string> Pnou;
+		for (auto p : P[n]) {
+			int i = 0;
+			while (i < p.size()) {
+				if (p[i] != '@' && Sigma.find(p[i]) == Sigma.end() && N.find(string(1, p[i])) == N.end())
+					break;
+				i++;
+			}
+			if (i == p.size())
+				Pnou.insert(p);
+		}
+		P[n] = Pnou;
+	}
+
 }
 
 void eliminateStart() {
@@ -92,10 +172,6 @@ void unitProductions() {
 
 }
 
-void uselessProductions() {
-
-}
-
 void eliminateTerminals() {
 	//Productiile noi adaugate
 	set <pair<char, char>> newAdd;
@@ -138,7 +214,6 @@ void eliminateTerminals() {
 	}
 }
 
-
 void eliminateMoreNonTerminals() {
 	//Neterminalele noi adaugate
 	set <char> newAdd;
@@ -174,7 +249,7 @@ void eliminateMoreNonTerminals() {
 
 int main() {
 	configGrammar();
-	eliminateStart();
+	/*eliminateStart();
 	for (auto p : P) {
 		cout << p.first << "->";
 		for (auto e : p.second)cout << e << ",";
@@ -197,6 +272,12 @@ int main() {
 	cout << endl;
 	eliminateMoreNonTerminals();
 
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}*/
+	uselessProductions();
 	for (auto p : P) {
 		cout << p.first << "->";
 		for (auto e : p.second)cout << e << ",";

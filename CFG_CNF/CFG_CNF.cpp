@@ -23,7 +23,7 @@ void configGrammar() {
 	Sigma.insert('c'); Sigma.insert('d');
 	
 	caracter = 'F';*/
-	/*P["S"].insert("aBcDeF"); P["S"].insert("HF"); P["S"].insert("HBc");
+	P["S"].insert("aBcDeF"); P["S"].insert("HF"); P["S"].insert("HBc");
 	P["B"].insert("b"); P["B"].insert("@");
 	P["D"].insert("d"); P["D"].insert("@");
 	P["F"].insert("G");
@@ -37,14 +37,15 @@ void configGrammar() {
 	Sigma.insert('e'); Sigma.insert('f');
 	Sigma.insert('g');
 
-	caracter = 'H';*/
+	caracter = 'H';
 
-	P["S"].insert("ASB");
-	P["A"].insert("aAS"); P["A"].insert("a"); P["A"].insert("@");
-	P["B"].insert("SbS"); P["B"].insert("A"); P["B"].insert("bb");
-	N.insert("S"); N.insert("A"); N.insert("B");
+	/*P["S"].insert("A"); P["S"].insert("B");
+	P["A"].insert("bS"); P["A"].insert("aB"); P["A"].insert("b");
+	P["B"].insert("AB"); P["B"].insert("Ba");
+	P["C"].insert("b"); P["C"].insert("AS");
+	N.insert("S"); N.insert("A"); N.insert("B"); N.insert("C");
 	Sigma.insert('a'); Sigma.insert('b');
-	caracter = 'B';
+	caracter = 'C';*/
 }
 
 void uselessProductions() {
@@ -78,6 +79,9 @@ void uselessProductions() {
 			}
 	} while (ok);
 
+	/*for (auto s : n1)
+		cout << s << " ";
+	cout << endl;*/
 
 	//Simboluri din N care sunt accesibile
 	vector <string> N2;
@@ -97,19 +101,45 @@ void uselessProductions() {
 		i++;
 	}
 
+	//for (auto s : n2)
+	//	cout << s << " ";
+	//cout << endl;
+
 	//Elementele comune = ce trebuie sa ramana (in n1)
-	auto it = n1.begin();
+	set<string>::iterator it = n1.begin();
 	while (it != n1.end()) {
 		if (n2.find(*it) == n2.end()) {
 			N.erase(*it);
 			P.erase(*it);
-			it = n1.erase(it);
+			it=n1.erase(it);
 
 		}
-		else
+		else{
+			n2.erase(*it);
 			it++;
+		}
 	}
-
+	for (auto s : n2) {
+		N.erase(s);
+		P.erase(s);
+	}
+		
+	//for (auto s : n1)
+	//	cout << s << " ";
+	//cout << endl;
+	//for (auto s : n2)
+	//	cout << s << " ";
+	//cout << endl;
+	//for(auto s:N)
+	//	cout << s << " ";
+	//cout << endl;
+	//for (auto s : P) {
+	//	cout << s.first << " ";
+	//	for (auto t : s.second)
+	//		cout << t << ",";
+	//	cout << endl;
+	//}
+	//	
 	//Stergem productiile care contine neterminale care nu sunt in N
 	for (auto n : N) {
 		set<string> Pnou;
@@ -171,7 +201,6 @@ void lambdaProductions() {
 								Pnou.insert(vechip);
 								vechip = "";
 							}
-
 						}
 						P[nn] = Pnou;
 					}
@@ -208,10 +237,7 @@ void unitProductions() {
 			}
 			P[n] = Pnou;
 		}
-	
 	} while (ok);
-
-
 }
 
 void eliminateTerminals() {
@@ -236,6 +262,8 @@ void eliminateTerminals() {
 							p[i] = caracternou;
 						else {
 							caracter++;
+							if (caracter == 'S')
+								caracter++;
 							string sc = string(1, caracter);
 							P[sc].insert(string(1, p[i]));
 							newAdd.insert({ caracter,p[i] });
@@ -258,90 +286,65 @@ void eliminateTerminals() {
 
 void eliminateMoreNonTerminals() {
 	//Neterminalele noi adaugate
-	set <char> newAdd;
-	int ok = 0;
-	for (auto n : N) {
-		set<string> Pnou;	//Retin toate productiile (cu modificari, daca e cazul)
-		for (auto p : P[n]) {
-			if (p.size() >= 3) {
-				ok = 1;
-				//Neterminalul de inserat
-				caracter++;
-				string sc = string(1, caracter);
-				string rest = p.substr(1);
-				p = p[0] + sc;
-				P[sc].insert(rest);
-				newAdd.insert(caracter);
+	set <pair<char,string>>newAdd;
+	int ok;
+	do {
+		ok = 0;
+		for (auto n : N) {
+			set<string> Pnou;	//Retin toate productiile (cu modificari, daca e cazul)
+			for (auto p : P[n]) {
+				if (p.size() >= 3) {
+					ok = 1;
+					string rest = p.substr(1);
+
+					int exista = 0;
+					char caracternou;
+					for (auto s : newAdd)
+						if (s.second == rest) {
+							exista = 1;
+							caracternou = s.first;
+							break;
+						}
+					if (exista == 1)
+						p = p[0] + string(1, caracternou);
+					else {
+						//Neterminalul de inserat
+						caracter++;
+						if (caracter == 'S')
+							caracter++;
+						string sc = string(1, caracter);
+						p = p[0] + sc;
+						P[sc].insert(rest);
+						newAdd.insert({ caracter,rest });
+					}
+				}
+				Pnou.insert(p);
 			}
-			Pnou.insert(p);
+			P[n] = Pnou;
 		}
-		P[n] = Pnou;
-	}
-
-	//Adaug neterminalele noi
-	if (newAdd.size() != 0) {
-		for (auto s : newAdd)
-			N.insert(string(1,s));
-	}
-
-	if(ok==1)
-		eliminateMoreNonTerminals();
+		//Adaug neterminalele noi
+		if (newAdd.size() != 0) {
+			for (auto s : newAdd)
+				N.insert(string(1, s.first));
+		}
+	} while (ok == 1);
+	
 }
 
 
 int main() {
 	configGrammar();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-	
 	uselessProductions();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-
 	lambdaProductions();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-
 	unitProductions();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-
 	uselessProductions();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-
 	eliminateTerminals();
-	for (auto p : P) {
-		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
-		cout << endl;
-	}
-	cout << endl;
-
 	eliminateMoreNonTerminals();
+
 	for (auto p : P) {
 		cout << p.first << "->";
-		for (auto e : p.second)cout << e << ",";
+		for (auto e : p.second)
+			cout << e << ",";
 		cout << endl;
 	}
 

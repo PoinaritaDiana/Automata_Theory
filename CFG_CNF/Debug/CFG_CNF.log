@@ -1,8 +1,8 @@
 ﻿  CFG_CNF.cpp
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(56,13): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(70,15): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(88,11): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(91,22): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(118,13): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(225,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(57,13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(71,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(92,11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(95,22): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(148,13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\CFG_CNF.cpp(255,23): warning C4018: '<': signed/unsigned mismatch
   CFG_CNF.vcxproj -> C:\Users\Diana\Desktop\SEM.2\LFA\Automata_Theory\CFG_CNF\Debug\CFG_CNF.exe

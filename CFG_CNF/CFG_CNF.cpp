@@ -11,18 +11,19 @@ set <char> Sigma;				//Terminale
 char caracter;
 
 void configGrammar() {
-	/*P["S"].insert("aAbC"); P["S"].insert("dB"); P["S"].insert("@");
-	P["A"].insert("bA"); P["A"].insert("@");
-	P["B"].insert("d"); P["B"].insert("c");
-	P["C"].insert("@"); 
-	P["F"].insert("@"); P["F"].insert("A"); P["F"].insert("BC");
+	//P["S"].insert("aAbC"); P["S"].insert("dB"); P["S"].insert("@");
+	//P["A"].insert("bA"); P["A"].insert("@");
+	//P["B"].insert("d"); P["B"].insert("c");
+	//P["C"].insert("@"); 
+	//P["F"].insert("@"); P["F"].insert("A"); P["F"].insert("BC");
 
-	N.insert("S"); N.insert("A"); N.insert("B");
-	N.insert("C"); N.insert("F");
-	Sigma.insert('a'); Sigma.insert('b');
-	Sigma.insert('c'); Sigma.insert('d');
-	
-	caracter = 'F';*/
+	//N.insert("S"); N.insert("A"); N.insert("B");
+	//N.insert("C"); N.insert("F");
+	//Sigma.insert('a'); Sigma.insert('b');
+	//Sigma.insert('c'); Sigma.insert('d');
+	//
+	//caracter = 'F';
+
 	P["S"].insert("aBcDeF"); P["S"].insert("HF"); P["S"].insert("HBc");
 	P["B"].insert("b"); P["B"].insert("@");
 	P["D"].insert("d"); P["D"].insert("@");
@@ -79,10 +80,6 @@ void uselessProductions() {
 			}
 	} while (ok);
 
-	/*for (auto s : n1)
-		cout << s << " ";
-	cout << endl;*/
-
 	//Simboluri din N care sunt accesibile
 	vector <string> N2;
 	set <string> n2;
@@ -100,10 +97,6 @@ void uselessProductions() {
 		}
 		i++;
 	}
-
-	//for (auto s : n2)
-	//	cout << s << " ";
-	//cout << endl;
 
 	//Elementele comune = ce trebuie sa ramana (in n1)
 	set<string>::iterator it = n1.begin();
@@ -124,22 +117,6 @@ void uselessProductions() {
 		P.erase(s);
 	}
 		
-	//for (auto s : n1)
-	//	cout << s << " ";
-	//cout << endl;
-	//for (auto s : n2)
-	//	cout << s << " ";
-	//cout << endl;
-	//for(auto s:N)
-	//	cout << s << " ";
-	//cout << endl;
-	//for (auto s : P) {
-	//	cout << s.first << " ";
-	//	for (auto t : s.second)
-	//		cout << t << ",";
-	//	cout << endl;
-	//}
-	//	
 	//Stergem productiile care contine neterminale care nu sunt in N
 	for (auto n : N) {
 		set<string> Pnou;
@@ -155,7 +132,6 @@ void uselessProductions() {
 		}
 		P[n] = Pnou;
 	}
-
 }
 
 void lambdaProductions() {
@@ -187,7 +163,7 @@ void lambdaProductions() {
 			else {
 				P[n].erase("@");
 				for (auto nn : N)
-					if (nn != n) {
+					{
 						set<string> Pnou;
 						string vechip = "";
 						for (auto p : P[nn]) {
@@ -287,7 +263,7 @@ void eliminateTerminals() {
 void eliminateMoreNonTerminals() {
 	//Neterminalele noi adaugate
 	set <pair<char,string>>newAdd;
-	int ok;
+	int ok=0;
 	do {
 		ok = 0;
 		for (auto n : N) {
@@ -328,7 +304,6 @@ void eliminateMoreNonTerminals() {
 				N.insert(string(1, s.first));
 		}
 	} while (ok == 1);
-	
 }
 
 

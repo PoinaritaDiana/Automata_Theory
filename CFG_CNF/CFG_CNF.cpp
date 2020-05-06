@@ -11,7 +11,7 @@ set <char> Sigma;				//Terminale
 char caracter;
 
 void configGrammar() {
-	P["S"].insert("aAbC"); P["S"].insert("dB"); P["S"].insert("@");
+	/*P["S"].insert("aAbC"); P["S"].insert("dB"); P["S"].insert("@");
 	P["A"].insert("bA"); P["A"].insert("@");
 	P["B"].insert("d"); P["B"].insert("c");
 	P["C"].insert("@"); 
@@ -22,7 +22,29 @@ void configGrammar() {
 	Sigma.insert('a'); Sigma.insert('b');
 	Sigma.insert('c'); Sigma.insert('d');
 	
-	caracter = 'F';
+	caracter = 'F';*/
+	/*P["S"].insert("aBcDeF"); P["S"].insert("HF"); P["S"].insert("HBc");
+	P["B"].insert("b"); P["B"].insert("@");
+	P["D"].insert("d"); P["D"].insert("@");
+	P["F"].insert("G");
+	P["G"].insert("f"); P["G"].insert("g");
+	P["H"].insert("@");
+
+	N.insert("S"); N.insert("D"); N.insert("B");
+	N.insert("G"); N.insert("F"); N.insert("H");
+	Sigma.insert('a'); Sigma.insert('b');
+	Sigma.insert('c'); Sigma.insert('d');
+	Sigma.insert('e'); Sigma.insert('f');
+	Sigma.insert('g');
+
+	caracter = 'H';*/
+
+	P["S"].insert("ASB");
+	P["A"].insert("aAS"); P["A"].insert("a"); P["A"].insert("@");
+	P["B"].insert("SbS"); P["B"].insert("A"); P["B"].insert("bb");
+	N.insert("S"); N.insert("A"); N.insert("B");
+	Sigma.insert('a'); Sigma.insert('b');
+	caracter = 'B';
 }
 
 void uselessProductions() {
@@ -170,6 +192,25 @@ void eliminateStart() {
 }
 
 void unitProductions() {
+	int ok;
+	do {
+		ok = 0;
+		for (auto n : N) {
+			set<string> Pnou;
+			for (auto p : P[n]) {
+				if (p != n && N.find(p) != N.end()) {
+					ok = 1;
+					for (auto pp : P[p])
+						Pnou.insert(pp);
+				}
+				else
+					Pnou.insert(p);
+			}
+			P[n] = Pnou;
+		}
+	
+	} while (ok);
+
 
 }
 
@@ -250,6 +291,12 @@ void eliminateMoreNonTerminals() {
 
 int main() {
 	configGrammar();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
 	
 	uselessProductions();
 	for (auto p : P) {
@@ -260,6 +307,22 @@ int main() {
 	cout << endl;
 
 	lambdaProductions();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
+
+	unitProductions();
+	for (auto p : P) {
+		cout << p.first << "->";
+		for (auto e : p.second)cout << e << ",";
+		cout << endl;
+	}
+	cout << endl;
+
+	uselessProductions();
 	for (auto p : P) {
 		cout << p.first << "->";
 		for (auto e : p.second)cout << e << ",";
